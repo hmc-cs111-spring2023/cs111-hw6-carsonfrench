@@ -7,5 +7,15 @@ import dfa._
 
 given Conversion[Char, RegularLanguage] = n => Character(n)
 
-// given Conversion[String, RegularLanguage] = n => Concat(Character(n(0)), Character(n.slice(1, n.length)))
-given Conversion[String, RegularLanguage] = n => if (n.length == 1) Character(n(0)) else (Concat(Character(n(0)), (n.slice(1, n.length))))
+// given Conversion[String, RegularLanguage] = n => if (n.length == 1) Character(n(0)) else (Concat(Character(n(0)), (n.slice(1, n.length))))
+given Conversion[String, RegularLanguage] = n => n.toList.foldRight(Concat(Epsilon, Epsilon))(Concat(_,_))
+
+
+extension (rl: RegularLanguage)
+    
+    def || (rl2: RegularLanguage) = Union(rl, rl2)
+    def ~ (rl2: RegularLanguage) = Concat(rl, rl2)
+    def <*> = Star(rl)
+    def <+> = Concat(rl, Star(rl))
+    def apply (reps: Int) : RegularLanguage = if (reps == 1) rl else (Concat(rl, rl apply (reps-1)))
+

@@ -1,5 +1,6 @@
 import machines.regex._
 import machines.given
+import machines._
 
 @main
 def main() = {
@@ -46,7 +47,7 @@ def main() = {
   //     val answer = "42"
   //
 
-  val answer = "Concat(four, two)"
+  val answer = "42"
 
   require(answer matches "42")
 
@@ -59,19 +60,7 @@ def main() = {
   //    val digit = '0' || '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8' || '9'
   //
 
-  val digit = Union(
-    zero,
-    Union(
-      one,
-      Union(
-        two,
-        Union(
-          three,
-          Union(four, Union(five, Union(six, Union(seven, Union(eight, nine)))))
-        )
-      )
-    )
-  )
+  val digit = '0' || '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8' || '9'
 
   require(digit matches "0")
   require(digit matches "1")
@@ -93,7 +82,7 @@ def main() = {
   //     val pi = '3' ~ '1' ~ '4'
   //
 
-  val pi = Concat(Character('3'), Concat(Character('1'), Character('4')))
+  val pi = '3' ~ '1' ~ '4'
 
   require(pi matches "314")
 
@@ -106,7 +95,7 @@ def main() = {
   //     val zeroOrMoreDigits = digit <*>
   //
 
-  val zeroOrMoreDigits = Star(digit)
+  val zeroOrMoreDigits = digit <*>
 
   require(zeroOrMoreDigits matches "")
   require(zeroOrMoreDigits matches "0")
@@ -123,7 +112,7 @@ def main() = {
   //     val number = digit <+>
   //
 
-  val number = Concat(digit, zeroOrMoreDigits)
+  val number = digit <+>
 
   require(!(number matches ""))
   require(number matches "0")
@@ -140,7 +129,7 @@ def main() = {
   //     val cThree = 'c'{3}
   //
 
-  val cThree = Concat(Character('c'), Concat(Character('c'), Character('c')))
+  val cThree = 'c'{3}
 
   require(cThree matches "ccc")
 
