@@ -12,10 +12,25 @@ given Conversion[String, RegularLanguage] = n => n.toList.foldRight(Concat(Epsil
 
 
 extension (rl: RegularLanguage)
-    
     def || (rl2: RegularLanguage) = Union(rl, rl2)
     def ~ (rl2: RegularLanguage) = Concat(rl, rl2)
     def <*> = Star(rl)
     def <+> = Concat(rl, Star(rl))
     def apply (reps: Int) : RegularLanguage = if (reps == 1) rl else (Concat(rl, rl apply (reps-1)))
+
+    def toDFA (using alphabet: Set[Char]) : DFA = regexToDFA(rl, alphabet)
+
+
+given Conversion[RegularLanguage, DFA] = n => regexToDFA(n, extractChars(n))
+
+def extractChars (rl: RegularLanguage): Set[Char] = rl match
+    case Empty => Set[Char]()
+    case Epsilon => Set[Char]()
+    case Character(c) => Set[Char](c)
+    case Union(r1, r2) => extractChars(r1) ++ extractChars(r2)
+    case Concat(r1,r2) => extractChars(r1) ++ extractChars(r2)
+    case Star(r) => extractChars(r)
+
+
+
 
