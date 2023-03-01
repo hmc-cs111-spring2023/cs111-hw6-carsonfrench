@@ -46,7 +46,7 @@ def main() = {
   //     val answer = "42"
   //
 
-  val answer = Concat(four, two)
+  val answer = "Concat(four, two)"
 
   require(answer matches "42")
 
